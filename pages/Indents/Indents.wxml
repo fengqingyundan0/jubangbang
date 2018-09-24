@@ -1,0 +1,291 @@
+<!--index.wxml-->
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class="swiper-tab">
+  <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" data-id="{{user_id}}" bindtap="bindChange">全部订单</view>
+  <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" data-id="{{user_id}}" bindtap="bindChange">待接单</view>
+  <view class="swiper-tab-list {{currentTab==2 ? 'on' : ''}}" data-current="2" data-id="{{user_id}}" bindtap="bindChange">正在进行</view>
+  <view class="swiper-tab-list {{currentTab==3 ? 'on' : ''}}" data-current="3" data-id="{{user_id}}" bindtap="bindChange">待评价</view>
+  <view class="swiper-tab-list {{currentTab==4 ? 'on' : ''}}" data-current="4" data-id="{{user_id}}" bindtap="bindChange">已完成</view>
+</view>
+<view class="orderlist" style="height: {{winHeight}}px">
+  <swiper current-item-id="{{currentTab}}" class="swiper-box" duration="300" style="height: {{winHeight}}px" bindchange="swichNav">
+    <!-- 全部 -->
+    <swiper-item item-id="0">
+      <scroll-view scroll-y="{{true}}" data-current="0" bindscrolltolower="searchScrollLower">
+        <block wx:for="{{goodlist}}" wx:key="key" wx:for-index="idx">
+          <view>
+            <view class='all_orders' catchtap="onPostTap" data-id="{{item.id}}" data-idx="{{idx}}">
+              <view class='order_quantity'>
+                <view class='complete'>
+                  <text style='color:#000;font-weight: bold;font-size:14px;width:50%;margin-left:18px;'>{{item.create_time}}</text>
+                  <!-- <view style='font-size:14px;color:#999;'>
+                  <text style='width:50px;'>订单号:</text>
+                  <text>{{item.orders_sn}}</text>
+                </view> -->
+                  <view class='sum'>
+                    <!-- <text style='position: absolute;right:18rpx;'>{{item.server_len}}</text>  -->
+                    <view wx:if="{{item.progress==1}}">
+                      <view class="coj hide{{showView?'show':''}}">
+                        <text style='color:#FF8000;' data>待接单 </text>
+                        <!-- <text data-progress="{{item.progress}}" data-id="{{item.id}}" data-user_id="{{item.user_id}}" style='color:#FF8000;margin-left:30px;border:1px solid #ccc;width:60px;height:20px;line-height:20px;background:#ccc;text-align:center;'>取消</text>  -->
+                      </view>
+                      <view class="coj hide{{showView?'':'show'}}">
+                        <text style='color:#000;' data>订单取消</text>
+                      </view>
+                    </view>
+                    <view wx:elif="{{item.progress==7}}" class="coj">
+                      <text style='color:#000;' data>订单取消</text>
+                    </view>
+                    <view wx:elif="{{item.progress==2}}" style='position: absolute;right:40px;display:flex;flex-direction: row;'>
+                      <text style='color:#FF8000;'> 已接单</text>
+                    </view>
+                    <view wx:elif="{{item.progress==8}}" style='position: absolute;right:40px;display:flex;flex-direction: row;'>
+                      <text style='color:#e34545;'> 退款中</text>
+                    </view>
+                    <view wx:elif="{{item.progress==9}}" style='position: absolute;right:40px;display:flex;flex-direction: row;'>
+                      <text style='color:#FF8000;'>进行中</text>
+                    </view>
+                    <view wx:elif="{{item.progress==3}}" style='position: absolute;right:40px;color:#FF8000;display:flex;flex-direction: row;'>
+                      <text style='color:#000;'>待评价</text>
+                    </view>
+                    <view wx:elif="{{item.progress==4}}" style='position: absolute;right:40px;display:flex;flex-direction: row;'>
+                      <text style='color:#999;'>已完成</text>
+                    </view>
+
+                    <view wx:elif="{{item.progress==5}}">
+                      <view class="coj hide{{showView?'show':''}}">
+                        <text style='color:#FF8000;' data>待付款 </text>
+                        <!-- <text catchtap='godT' data-progress="{{item.progress}}" data-id="{{item.id}}" data-user_id="{{item.user_id}}" style='color:#FF8000;margin-left:30px;border:1px solid #ccc;width:60px;height:20px;line-height:20px;background:#ccc;text-align:center;'>取消</text> -->
+                      </view>
+                      <view class="coj hide{{showView?'':'show'}}">
+                        <text style='color:#000;' data>订单关闭</text>
+                        <!-- <text catchtap='remo' data-progress="{{item.progress}}" data-id="{{item.id}}" data-user_id="{{item.user_id}}" style='color:#FF8000;margin-left:30px;border:1px solid #ccc;width:60px;height:20px;line-height:20px;background:#ccc;text-align:center;'>删除</text> -->
+                      </view>
+                    </view>
+                    <view wx:elif="{{item.progress==6}}" class="coj">
+                      <text style='color:#000;' data>订单关闭</text>
+                      <!-- <text catchtap='remo' data-progress="{{item.progress}}" data-id="{{item.id}}" data-user_id="{{item.user_id}}" style='color:#FF8000;margin-left:30px;border:1px solid #ccc;width:60px;height:20px;line-height:20px;background:#ccc;text-align:center;'>删除</text> -->
+
+                    </view>
+                  </view>
+                </view>
+                <view style='width:30%;padding:10rpx 0;'>
+                  <span style="color:#000;font-size:12px;margin-left:36rpx;display:block;width:100%;height:36rpx;line-height:36rpx;">{{item.cate_name}}</span>
+                </view>
+                <block wx:if="{{item.cate_id == 31}}">
+                  <view style='display: flex;flex-direction: row;padding-top:5px'>
+                    <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                    <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                  </view>
+                </block>
+                <block wx:else>
+                  <view style='display: flex;flex-direction: row;padding-bottom:5px'>
+                    <span style="width:5px;height:5px;border-radius:2.5px;background:#2fd042;margin-top:4px;"></span>
+                    <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.start_adrs}}</text>
+                  </view>
+                  <view style='height:10px;border-left:1px solid #ccc;margin-left:1px;'></view>
+                  <view style='display: flex;flex-direction: row;padding-top:5px'>
+                    <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                    <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+    <!-- 待接单 -->
+    <swiper-item item-id="1">
+      <scroll-view scroll-y="{{true}}" data-current="1" bindscrolltolower="searchScrollLower">
+        <block wx:for="{{goodlist}}" wx:key="key" wx:for-index="idx">
+          <view class='all_orders' catchtap="onPostTap" data-id="{{item.id}}" data-idx="{{idx}}">
+            <view class='order_quantity'>
+              <view class='complete'>
+                <text style='color:#000;font-weight: bold;font-size:14px;width:50%;margin-left:18px;'>{{item.create_time}}</text>
+                <!-- <view style='font-size:14px'>
+              <text style='width:50px;'>订单号:</text>
+              <text>{{item.orders_sn}}</text>
+            </view> -->
+                <view class='sum'>
+                  <view wx:if="{{item.progress==1}}">
+                    <view class="coj hide{{showView?'show':''}}">
+                      <text style='color:#FF8000;' data>待接单 </text>
+                      <!-- <text catchtap='godT' data-progress="{{item.progress}}" data-id="{{item.id}}" data-user_id="{{item.user_id}}" style='color:#FF8000;margin-left:30px;border:1px solid #ccc;width:60px;height:20px;line-height:20px;background:#ccc;text-align:center;'>取消</text> -->
+                    </view>
+                    <view class="coj hide{{showView?'':'show'}}">
+                      <text style='color:#000;' data>订单取消</text>
+                    </view>
+                  </view>
+                  <view wx:elif="{{item.progress==7}}" class="coj">
+                    <text style='color:#000;' data>订单取消</text>
+                  </view>
+                </view>
+              </view>
+              <view style='width:30%;padding:10rpx 0;'>
+                <span style="color:#000;font-size:12px;margin-left:36rpx;display:block;width:100%;height:36rpx;line-height:36rpx;">{{item.cate_name}}</span>
+              </view>
+              <block wx:if="{{item.cate_id == 31}}">
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view style='display: flex;flex-direction: row;padding-bottom:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#2fd042;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.start_adrs}}</text>
+                </view>
+                <view style='height:10px;border-left:1px solid #ccc;margin-left:1px;'></view>
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+    <!-- 正在进行 -->
+    <swiper-item item-id="2">
+      <scroll-view scroll-y="{{true}}" data-current="2" bindscrolltolower="searchScrollLower">
+        <block wx:for="{{goodlist}}" wx:key="key" wx:for-index="idx">
+          <view class='all_orders' catchtap="onPostTap" data-id="{{item.id}}" data-idx="{{idx}}">
+            <view class='order_quantity'>
+              <view class='complete'>
+                <text style='color:#000;font-weight: bold;font-size:14px;width:50%;margin-left:18px;'>{{item.create_time}}</text>
+                <view class='sum'>
+                  <view wx:if="{{item.progress==2}}">
+                    <view class="coj hide{{showView?'show':''}}">
+                      <text style='color:#FF8000;' data>已接单 </text>
+                    </view>
+                  </view>
+                  <view wx:elif="{{item.progress==9}}" class="coj">
+                    <text style='color:#FF8000;' data>进行中</text>
+                  </view>
+                </view>
+              </view>
+              <view style='width:30%;padding:10rpx 0;'>
+                <span style="color:#000;font-size:12px;margin-left:36rpx;display:block;width:100%;height:36rpx;line-height:36rpx;">{{item.cate_name}}</span>
+              </view>
+              <block wx:if="{{item.cate_id == 31}}">
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view style='display: flex;flex-direction: row;padding-bottom:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#2fd042;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.start_adrs}}</text>
+                </view>
+                <view style='height:10px;border-left:1px solid #ccc;margin-left:1px;'></view>
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+    <!-- 待评价 -->
+    <swiper-item item-id="3">
+      <scroll-view scroll-y="{{true}}" data-current="3" bindscrolltolower="searchScrollLower">
+        <block wx:for="{{goodlist}}" wx:key="key" wx:for-index="idx">
+          <view class='all_orders' catchtap="onPostTap" data-id="{{item.id}}" data-idx="{{idx}}">
+            <view class='order_quantity'>
+              <view class='complete'>
+                <text style='color:#000;font-weight: bold;font-size:14px;width:50%;margin-left:18px;'>{{item.create_time}}</text>
+                <view class='sum'>
+                  <view wx:if="{{item.progress==3}}">
+                    <view class="coj hide{{showView?'show':''}}">
+                      <text style='color:#000;' data>待评价 </text>
+                    </view>
+                    <view class="coj hide{{showView?'':'show'}}">
+                      <text style='color:#000;' data>订单取消</text>
+                    </view>
+                  </view>
+                  <view wx:elif="{{item.progress==7}}" class="coj">
+                    <text style='color:#000;' data>订单取消</text>
+                  </view>
+                </view>
+              </view>
+              <view style='width:30%;padding:10rpx 0;'>
+                <span style="color:#000;font-size:12px;margin-left:36rpx;display:block;width:100%;height:36rpx;line-height:36rpx;">{{item.cate_name}}</span>
+              </view>
+              <block wx:if="{{item.cate_id == 31}}">
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view style='display: flex;flex-direction: row;padding-bottom:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#2fd042;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.start_adrs}}</text>
+                </view>
+                <view style='height:10px;border-left:1px solid #ccc;margin-left:1px;'></view>
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+    <!-- 已完成 -->
+    <swiper-item item-id="4">
+      <scroll-view scroll-y="{{true}}" data-current="4" bindscrolltolower="searchScrollLower">
+        <block wx:for="{{goodlist}}" wx:key="key" wx:for-index="idx">
+          <view class='all_orders' catchtap="onPostTap" data-id="{{item.id}}" data-idx="{{idx}}">
+            <view class='order_quantity'>
+              <view class='complete'>
+                <text style='color:#000;font-weight: bold;font-size:14px;width:50%;margin-left:18px;'>{{item.create_time}}</text>
+                <view class='sum'>
+                  <view wx:if="{{item.progress==4}}">
+                    <view class="coj hide{{showView?'show':''}}">
+                      <text style='color:#999;' data>已完成 </text>
+                    </view>
+                    <view class="coj hide{{showView?'':'show'}}">
+                      <text style='color:#000;' data>订单取消</text>
+                    </view>
+                  </view>
+                  <view wx:elif="{{item.progress==7}}" class="coj">
+                    <text style='color:#000;' data>订单取消</text>
+                  </view>
+                </view>
+              </view>
+              <view style='width:30%;padding:10rpx 0;'>
+                <span style="color:#000;font-size:12px;margin-left:36rpx;display:block;width:100%;height:36rpx;line-height:36rpx;">{{item.cate_name}}</span>
+              </view>
+              <block wx:if="{{item.cate_id == 31}}">
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view style='display: flex;flex-direction: row;padding-bottom:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#2fd042;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.start_adrs}}</text>
+                </view>
+                <view style='height:10px;border-left:1px solid #ccc;margin-left:1px;'></view>
+                <view style='display: flex;flex-direction: row;padding-top:5px'>
+                  <span style="width:5px;height:5px;border-radius:2.5px;background:#ef2c00;margin-top:4px;"></span>
+                  <text style='line-height:14px;color:#999;margin-left:22rpx;'>{{item.end_adrs}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+  </swiper>
+</view>

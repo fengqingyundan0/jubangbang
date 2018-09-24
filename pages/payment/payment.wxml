@@ -1,0 +1,92 @@
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class='Orderdetail'>
+  <text class='Orderdetail_time' style='margin-left:10rpx;font-size:16px;'>详细订单</text>
+  <view class='Orderdetail_details' style='margin-top:5px;'>
+    <block wx:if="{{demand}}">
+      <text class='Orderdetail_delivery'>服务类型：{{cate_name}}</text>
+      <text class='Orderdetail_delivery'>用车时间：{{server_time}}</text>
+      <text class='Orderdetail_delivery' wx:if="{{server_type == 6 }}">您的留言：{{demand}}</text> 
+      <text class='Orderdetail_delivery' wx:else>您的需求：{{demand}}</text>            
+      <text class='Orderdetail_delivery'>服务地址：{{start_adrs}}</text>
+      <text class='Orderdetail_delivery' space="emsp">称  呼：{{userName}}</text>
+      <text class='Orderdetail_delivery'>联系电话：{{telephone}}</text>
+    </block>
+    <block wx:elif="{{server_type == 4}}">
+      <text class='Orderdetail_delivery'>服务类型：{{cate_name}}</text>
+      <text class='Orderdetail_delivery'>用车时间：{{server_time}}</text>         
+      <text class='Orderdetail_delivery'>服务地址：{{start_adrs}}</text>
+      <text class='Orderdetail_delivery' space="emsp">称  呼：{{userName}}</text>
+      <text class='Orderdetail_delivery'>联系电话：{{telephone}}</text>
+    </block>
+    <block wx:else>
+      <text class='Orderdetail_delivery'>服务车型：{{cate_name}}</text>
+      <text class='Orderdetail_delivery'>用车时间：{{server_time}}</text>
+      <text class='Orderdetail_delivery'>用车起点：{{start_adrs}}</text>
+      <text class='Orderdetail_delivery'>用车终点：{{end_adrs}}</text>
+      <text class='Orderdetail_delivery'>取货联系人：{{userName}}</text>
+      <text class='Orderdetail_delivery'>取货联系电话：{{telephone}}</text>
+      <text class='Orderdetail_delivery'>送达联系人：{{ser_name}}</text>
+      <text class='Orderdetail_delivery'>送达联系电话：{{ser_telephone}}</text>
+    </block>
+  </view>
+  <view class='prices' wx:if="{{server_type != 6}}">
+    <view class='price'>
+      <text style="color:#999;font-size:14px;margin-left:5px;">服务价格：</text>
+      <text style="color:#e34545;font-size:14px;position:absolute;right:28px;margin-top:4px;">{{price}}元</text>
+    </view>
+    <block>
+      <view class='price' bindtap='goDiscount' wx:if="{{_type == ''}}" style="position:relative;">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="color:#e34545;font-size:14px;position:absolute;right:0px;height:20px;">请选择优惠券〉</text>
+      </view>
+      <view class='price' bindtap='goDiscount' wx:elif="{{_type == 1}}">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="background-color:#e34545;font-size:10px;position:absolute;right:28px;margin-top:7px;height:14px;color:#fff;">{{_cate_name}}:{{num}}元优惠〉</text>
+      </view>
+      <view class='price' bindtap='goDiscount' wx:elif="{{_type == 2}}">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="background-color:#e34545;font-size:10px;position:absolute;right:28px;margin-top:7px;height:14px;color:#e34545;">{{num}}折〉</text>
+      </view>
+      <view class='price' bindtap='goDiscount' wx:elif="{{_type == 3}}">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="font-size:10px;position:absolute;right:28px;margin-top:7px;height:14px;color:#e34545;">{{_cate_name}}:{{num}}元优惠〉</text>
+      </view>
+      <view class='price' bindtap='goDiscount' wx:elif="{{_type == 4}}">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="font-size:10px;position:absolute;right:28px;margin-top:7px;height:14px;color:#e34545;">不使用优惠券〉</text>
+      </view>
+      <view class='price' bindtap='goDiscount' wx:elif="{{_type == 5}}">
+        <text style="color:#999;font-size:14px;margin-left:5px;">优惠券：</text>
+        <text style="font-size:10px;position:absolute;right:28px;margin-top:7px;height:14px;color:#e34545;">{{_cate_name}}免单优惠券〉</text>
+      </view>
+    </block>
+    <view class="price">
+      <text style="color:#333333;font-size:16px;margin-left:5px;">合计：</text>
+      <text style="color:#e34545;font-size:16px;position:absolute;right:28px;">{{pay_fee}}元</text>
+    </view>
+  </view>
+  <view class='Orderdetail_details' style='margin-top:10px;height:61px' wx:if="{{!server_type}}">
+    <text style='font-size:13px;color:#000'>备注:（是否有易碎/贵重物品、预估物品体积和重量）</text>
+    <textarea bindinput="bindTextAreaBlur" class="weui-textarea" placeholder-class="z-index:1;" style="heigth:20px;line-height:16px;font-size:12px;color:#000;overflow:hidden" value="{{ceshi}}" />
+  </view>
+</view>
+<button class='pay_butt' bindtap="showDialogBtn" wx:if="{{server_type != 6}}">去支付</button>
+<button class='pay_butt' bindtap="recycle" wx:else>确定下单</button>
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+  <view class="modal-title">提示：请选择支付类型</view>
+  <view class="modal-content">
+    <view class="modal-radio">
+      <radio-group class="radio-group" bindchange="radioChange">
+        <label class="radio" wx:for="{{payType}}" wx:key="{{idx}}" style="display:flex;line-height:60rpx;height:60rpx;">
+          <radio style="transform:scale(0.7);" name="{{item.name}}" checked="{{item.checked}}" disabled="{{item.disabled}}" value="{{item.id}}" color="#fbc647" />{{item.value}}
+        </label>
+      </radio-group>
+    </view>
+  </view>
+  <view class="modal-footer">
+    <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+    <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+  </view>
+</view>

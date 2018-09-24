@@ -1,0 +1,17 @@
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+
+<scroll-view scroll-y="{{true}}" data-current="0" bindscrolltolower="onReachBottom">
+  <block wx:for="{{goodLists}}" wx:key="key" wx:for-index="idx">
+    <view class='part'>
+      <view class='parts'>
+        <text class='part_t1'>{{ item.category }}</text>
+        <text class='part_t3'>{{ item.singed }}{{ item.money }}</text>
+      </view>
+      <view class='partz'>
+        <text class='part_t2'>{{ item.create_time }}</text>
+        <text class='part_t4'>余额{{ item.total }}</text>
+      </view>
+    </view>
+  </block>
+</scroll-view>

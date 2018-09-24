@@ -1,0 +1,140 @@
+/* pages/Wallet/Discount/Discount.wxss */
+
+page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: #f5f1f2;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  
+}
+
+.nav {
+  display: flex;
+  width: 100%;
+  height: 120rpx;
+  align-items: center;
+  color: #161525;
+}
+
+.navbar {
+  display: flex;
+  flex: none;
+  width: 395rpx;
+  height: 52rpx;
+  align-items: center;
+  border: 2rpx solid #161525;
+  border-radius: 26rpx;
+  margin: 0 auto;
+}
+
+.navbar .item {
+  width: 187rpx;
+  height: 56rpx;
+  position: relative;
+  flex: auto;
+  text-align: center;
+  line-height: 56rpx;
+  border-radius: 28rpx;
+  font-size: 12px;
+  margin: 0 -2rpx;
+}
+
+.navbar .item.active {
+  color: #eee;
+  background-color: #161525;
+}
+
+/* .navbar .item.active:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: #405e82;
+} */
+
+.discounts {
+  height: 956rpx;
+  overflow: hidden;
+}
+
+.discount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 20rpx;
+}
+
+button.getDiscount {
+  background-color: #e34545;
+  font-size: 14px;
+  color: #f3f3f3;
+  position: fixed;
+  bottom: 30px;
+}
+
+.canUse, .used, .overdue {
+  width: 78%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.discount-info {
+  display: flex;
+  flex-direction: column;
+  height: 212rpx;
+  width: 100%;
+  margin-top: 20rpx;
+  background: url("https://mq.mouqukeji.com/static/image/discount.jpg") no-repeat;
+  background-size: contain;
+  position: relative;
+}
+
+.cartype {
+  font-size: 12px;
+  color: #eee;
+  width: 90%;
+  position: absolute;
+  top: 100rpx;
+  left: 154rpx;
+}
+
+.used .discount-info {
+  opacity: 0.5;
+}
+
+.overdue .discount-info {
+  opacity: 0.3;
+}
+
+view.canUse .discount-info.active {
+  border-left: 3px solid #e34545;
+}
+
+view.canUse .goUse {
+  height: 18px;
+  background: rgba(0, 0, 0, 0.5);
+  width: 50px;
+  font-size: 14px;
+  color: #eee;
+  text-align: center;
+  line-height: 18px;
+  border: solid 1px #eee;
+  border-radius: 5px;
+  position: absolute;
+  right: 20rpx;
+  bottom: 20rpx;
+}

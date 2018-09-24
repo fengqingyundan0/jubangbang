@@ -1,0 +1,31 @@
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class='wallettA'>
+  <view class='wall'>
+    <text style='width:95%;height:120rpx;line-height:120rpx;font-size:40rpx;margin-left:5%;display:block;'>钱包账户</text>
+  </view>
+  <view>
+    <image src='../../img/wallet.jpg' style='width:672rpx;height:340rpx;margin:10rpx auto;display:block;'></image>
+  </view>
+  <view class='walls'>
+    <text style='width:95%;height:60rpx;line-height:60rpx;font-size:30rpx;margin-left:5%;display:block;'>余额</text>
+  </view>
+  <view>
+    <view class='wallet' bindtap="bindsInTap">
+      <text class='wallets'>{{ total }}</text>
+      <text class='walleta'>充值</text>
+      <image src='../../img/jiantou.png'></image>
+    </view>
+    <view class='waets'></view>
+    <view class='walletA' bindtap="bindItTap">
+      <text class='walletAs'>优惠券</text>
+      <text class='walletAa'>去查看</text>
+      <image src='../../img/jiantou.png'></image>
+    </view>
+    <view class='walletA' bindtap="bindParTap">
+      <text class='walletAs'>明细</text>
+      <text class='walletAa'>前往</text>
+      <image src='../../img/jiantou.png'></image>
+    </view>
+  </view>
+</view>

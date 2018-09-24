@@ -1,0 +1,296 @@
+<!--pages/Index/Index.wxml-->
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class="nav">
+  <view class='tab_name'>
+    <block wx:if="{{!userInfo}}">
+      <image bindtap="onIndentTap" class="userinfo-avatar" src="{{avatar_url}}" background-size="cover" style=''></image>
+    </block>
+    <block wx:else>
+      <image bindtap="onIndentTap" class="userinfo-avatar" src="{{avatar_url}}" background-size="cover" style=''></image>
+    </block>
+  </view>
+  <swiper class="ad" indicator-dots="" duration='1000' autoplay='true' circular='true' style="width:70%;">
+    <swiper-item>
+      <view></view>
+    </swiper-item>
+    <swiper-item>
+      <view></view>
+    </swiper-item>
+  </swiper>
+  <text class="currentCity" bindtap="gotlocation">{{currentCity}}</text>
+</view>
+<scroll-view class='navbar' scroll-x="true" scroll-left="{{(currentTab-27)* tabWidth}}">
+  <view id="{{item.id}}" wx:for="{{menus}}" wx:key="{{item.id}}" class="item {{currentTab==item.id ? 'active' : ''}}" bindtap="navbarTap" data-cate_name="{{item.cate_name}}" data-price="{{item.price}}" data-base_price="{{item.base_price}}" data-base_km="{{item.base_km}}"
+    style="width:{{tabWidth}}px;">{{item.cate_name}}</view>
+  <view class="navbar_slider" style="transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+</scroll-view>
+<!-- 车型匹配  -->
+<swiper class="car" current-item-id="{{currentTab}}" indicator-dots="" indicator-color="rgba(0,0,0,0.3)" indicator-active-color="#e34545" duration="500" bindchange="switchtab" style="height:318rpx">
+  <swiper-item item-id="{{item.id}}" wx:for="{{menus}}" wx:key="{{item.id}}" class="car_type car{{item.id}}" data-cate_name="{{item.cate_name}}" data-price="{{item.price}}" data-base_price="{{item.base_price}}" data-base_km="{{item.base_km}}">
+    <view style="width:100%;height:{{currentTab == 31 ? 284 : 246}}rpx;">
+      <image src="{{item.cate_photo}}" style="width:670rpx;height:{{currentTab == 31 ? 280 : 238}}rpx;margin-top:1%;margin-left:50%;transform:translateX(-50%);"></image>
+      <!-- <block>
+        <view class="suffer" style="display:fixed;" wx:if="{{item.id < 31}}">*图片仅供参考</view>
+        <view class="suffer" style="display:fixed;top:200rpx;" wx:else>*图片仅供参考</view>      
+      </block> -->
+    </view>
+    <block>
+      <view wx:if="{{item.id ==27}}" style="width:100%;display:flex;">
+        <view class="weight">
+          <text>500公斤</text>
+          <text class='tp'>载重</text>
+        </view>
+        <view class="size">
+          <text>1.8*1.3*1.1米</text>
+          <text class="tp">长*宽*高</text>
+        </view>
+        <view class="volum">
+          <text>2.6方</text>
+          <text class="tp">载货体积</text>
+        </view>
+      </view>
+      <view wx:elif="{{item.id ==28}}" style="width:100%;display:flex;">
+        <view class="weight">
+
+          <text>1吨</text>
+          <text class='tp'>载重</text>
+        </view>
+        <view class="size">
+          <text>2.7*1.4*1.2米</text>
+          <text class="tp">长*宽*高</text>
+        </view>
+        <view class="volum">
+          <text>4.5方</text>
+          <text class="tp">载货体积</text>
+        </view>
+      </view>
+      <view wx:elif="{{item.id ==29}}" style="width:100%;display:flex;">
+        <view class="weight">
+          <text>1.5吨</text>
+          <text class='tp'>载重</text>
+        </view>
+        <view class="size">
+          <text>2.7*1.9*1.7米</text>
+          <text class="tp">长*宽*高</text>
+        </view>
+        <view class="volum">
+          <text>8.7方</text>
+          <text class="tp">载货体积</text>
+        </view>
+      </view>
+      <view wx:elif="{{item.id ==30}}" style="width:100%;display:flex;">
+        <view class="weight">
+          <text>1.8吨</text>
+          <text class='tp'>载重</text>
+        </view>
+        <view class="size">
+          <text>4.2*2.0*2.0米</text>
+          <text class="tp">长*宽*高</text>
+        </view>
+        <view class="volum">
+          <text>16.8方</text>
+          <text class="tp">载货体积</text>
+        </view>
+      </view>
+    </block>
+  </swiper-item>
+</swiper>
+<!-- <view class="car-indicator-dots">
+  <view wx:for="{{menus}}" wx:key="{{item.id}}" class="indicator-dots indicator-dots{{item.id}} {{currentTab==item.id ? 'check' : ''}}"></view>
+</view> -->
+<view style='height:12rpx;background:#ededed' wx:if="{{currentTab != 31}}"></view>
+<!-- <view style='height:20rpx;background:#fff' wx:else></view> -->
+<!-- 用车时间和选择位置  -->
+<view class="car_tl" wx:if="{{currentTab != 31}}">
+  <view class="location_box">
+    <view class="text" style="height:{{height_a}}rpx">
+      <view style="width:10px;height:10px;border-radius:5px;background:#2fd042;margin-top:{{marginTop}}rpx;display:inline-block;"></view>
+      <view class='detail' style="height:{{height_da}}rpx;line-height:{{lineheight_da}}rpx;" bindtap='goSuggestion' data-placeholder="请输入起点">
+        <text wx:if="{{origin_address}}" data-placeholder="请输入起点">{{origin_title}}</text>
+        <text wx:else data-placeholder="请输入起点">请输入起点</text>
+      </view>
+      <input class="floor" placeholder='单元、楼层号(选填）' placeholder-class="placeholderZindex" placeholder-style='color:#ccc;font-size:12px;' bindinput='originFloor' hidden="{{hideInput}}" style="position:absolute;top:40px;"></input>
+    </view>
+    <view class="text" style='border-top:1px solid #f5f1f2;height:{{height_b}}rpx'>
+      <view style="width:10px;height:10px;border-radius:5px;background:#ef2c00;margin-top:{{marginTop_b}}rpx;"></view>
+      <view class='detail' style='top:{{top}}rpx;height:{{height_db}}rpx;line-height:{{lineheight_db}}rpx;' bindtap='goSuggestion' data-placeholder="请输入终点">
+        <text wx:if="{{destination_address}}" data-placeholder="请输入终点">{{destination_title}}</text>
+        <text wx:else data-placeholder="请输入终点">请输入终点</text>
+      </view>
+      <input class="floor" placeholder='单元、楼层号(选填）' placeholder-class="placeholderZindex" placeholder-style='color:#ccc;font-size:12px;' bindinput='destinationFloor' hidden="{{hideInput_b}}" style="position:absolute;top:{{top_b}}px;"></input>
+    </view>
+
+  </view>
+
+</view>
+<view class="contact" wx:if="{{currentTab != 31}}">
+  <view class='Orderdetail_details'>
+    <text class="take">取货联系人</text>
+    <view style='height:80rpx;margin:5px 0 0;display: flex;flex-direction: row;'>
+      <image src='https://mq.mouqukeji.com/static/image/lianxiren.png' style='width:16px;height:16px;margin-top:10px;margin-left:12rpx;'></image>
+      <input type="text" placeholder="请输入姓名" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;" name="userName" bindinput='userNameInput' value="{{userName}}"></input>
+    </view>
+    <view style='height:80rpx;display: flex;flex-direction: row;border-top:2rpx solid #f5f1f2;'>
+      <image src='https://mq.mouqukeji.com/static/image/telphone(1).png' style='width:16px;height:16px;margin-top:16px;margin-left:12rpx;'></image>
+      <input type="number" placeholder="请输入手机号" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;" style="margin-top:10rpx;" maxlength="11" bindinput='passWdInput' value="{{telephone}}"></input>
+    </view>
+  </view>
+  <view class='Orderdetail_details'>
+    <text class="arrive">送达联系人</text>
+    <checkbox-group class="infocheckbox" bindchange="checkboxChangeT">
+      <label class="info_checkbox">
+        <checkbox style="transform:scale(0.7);" value="1" checked="{{same}}" color="#e34545" />送达联系人信息同上
+      </label>
+    </checkbox-group>
+    <view hidden="{{!same? false : true}}">
+      <view style='height:80rpx;margin:5px 0 0;display: flex;flex-direction: row;'>
+        <image src='http://mq.mouqukeji.com/static/image/lianxiren.png' style='width:16px;height:16px;margin-top:10px;margin-left:12rpx;'></image>
+        <input type="text" placeholder="请输入姓名" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;" name="userName" bindinput='userNameInputT' value="{{userNameTwo}}"></input>
+      </view>
+      <view style='height:80rpx;display: flex;flex-direction: row;border-top:2rpx solid #f5f1f2;'>
+        <image src='http://mq.mouqukeji.com/static/image/telphone(1).png' style='width:16px;height:16px;margin-top:16px;margin-left:12rpx;'></image>
+        <input style="margin-top:10rpx;" type="number" placeholder="请输入手机号" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;" maxlength="11" bindinput='passWdInputT' value="{{telephoneTwo}}"></input>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="price" wx:if="{{currentTab != 31}}">
+  <view class="text_aaaa" wx:if="{{carriage}}">¥{{carriage}}元</view>
+  <!-- <view class="carriage" wx:else>¥\n &nbsp;\n元</view>  -->
+  <text class='text_aaaa' wx:else decode="{{true}}">¥ &nbsp;&nbsp;&nbsp;&nbsp; 元</text>
+  <view class="text_price" hidden="{{carriage ? false : true}}" bindtap="goPriceDetail">*价格明细</view>
+  <checkbox-group bindchange="checkboxChange">
+    <label class="checkbox" wx:if="{{carriage}}">
+      <checkbox style="transform:scale(0.7);" value="100" checked="" color="#e34545" />需要搬货服务（搬货费用需与司机协商）
+    </label>
+    <label class="checkbox" wx:else>
+      <checkbox style="transform:scale(0.7);margin-top:56rpx;" value="100" checked="" color="#e34545" />需要搬货服务（搬货费用需与司机协商）
+    </label>
+  </checkbox-group>
+  <!-- <label>
+      <checkbox hidden value="同意提供搬货服务,需额外支付服务费100元。" checked="true"></checkbox>
+      <view class="label-1__icon">
+        <view class="label-1__icon-checked" style="opacity:{{true ? 1: 0}}"></view>
+      </view>
+      <text class="label-1__text">同意提供搬货服务,需额外支付服务费100元。</text>
+    </label> -->
+</view>
+<view class="bangInfo" wx:if="{{currentTab == 31}}">
+  <view class="serverTypeTab">
+    <view wx:for="{{serverType}}" wx:key="{{item.id}}" class="item {{type_id ==item.id ? 'active' : ''}}" bindtap="serverTypeTab" data-id="{{item.id}}" data-type_name="{{item.type_name}}" data-price="{{item.price}}" data-serfee="{{serFee}}" style="width:{{tabWidths}}px;">{{item.type_name}}</view>
+  </view>
+  <view class="newsboard" wx:if="{{type_name != '保洁'}}">
+    <textarea class="news_board" placeholder="{{type_name == '回收换钱' ? newsboardB : newsboardA}}" placeholder-class="placeholderZindex" placeholder-style='color:#ccc;font-size:26rpx;' hidden="{{hideInput_c}}" bindinput="newsboardInput" bindblur="newsboardInput"></textarea>
+  </view>
+  <view class="{{type_name == '保洁' ? 'cleanborder' : ''}}">
+    <view class="b_contact {{type_name == '保洁' ? 'cleanMargin' : ''}}">
+      <view class="nickname">称呼：
+        <input type="text" placeholder-class="placeholderZindex" bindinput="serNameInput"></input>
+      </view>
+      <view class="tel">电话：
+        <input type="number" placeholder-class="placeholderZindex" maxlength="11" bindinput="serPhoneInput"></input>
+      </view>
+    </view>
+    <block>
+      <view class="server_adr" wx:if="{{type_name == '回收换钱'}}">回收地址：
+        <input type="text" placeholder="市、区、街道、门牌号、单元、楼层" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;font-size:26rpx;" bindinput="serverAdrInput"></input>
+      </view>
+      <view class="server_adr" wx:else>服务地址：
+        <input type="text" placeholder="市、区、街道、门牌号、单元、楼层" placeholder-class="placeholderZindex" placeholder-style="color:#ccc;font-size:26rpx;" bindinput="serverAdrInput"></input>
+      </view>
+    </block>
+    <view class="clean" wx:if="{{type_name == '保洁'}}">
+      <view class="cleanNote">活动价99元/次（
+        <s style="text-decoration:line-through;">原价40元/时</s>），首单下单成功赠送一张免单保洁券。2018.09.30活动截止。</view>
+      <checkbox-group bindchange="checkboxChangeClean">
+        <label class="checkbox bringtool">
+          <checkbox style="transform:scale(0.7);" value="1" checked="" color="#e34545" />需要带工具
+        </label>
+      </checkbox-group>
+      <view class="serSquare">
+        需要打扫的面积：
+        <input type="text" style="color:#333;font-weight:border;border-bottom: 2rpx solid #000;max-width:112rpx;" bindinput="bangAreaInput" bindblur="bangAreaInput"></input> 平方
+      </view>
+    </view>
+    <block>
+      <view class="serPrice" wx:if="{{type_name == '保洁'}}">
+        总价：
+        <text style="color:#e34545;">¥{{cleanPrice}}元</text>
+      </view>
+      <view class="serPrice" wx:elif="{{type_name != '回收换钱'}}">
+        愿报价：
+        <input type="text" style="color:#e34545;font-weight:border;border-bottom: 2rpx solid #000;max-width:150rpx;" bindinput="bangPriceInput" bindblur="bangPriceInput"></input> 元
+      </view>
+    </block>
+    <block>
+      <view class="lowest_price" wx:if="{{type_name == '保洁'}}">
+        *温馨提示：如遇复杂保洁内容，需与保洁员协商议价。
+      </view>
+      <view class="lowest_price" wx:elif="{{type_name != '回收换钱'}}">
+        *{{type_name}}类服务最低报价{{lowest_price}}元，提高报价可提升接单率。
+      </view>
+    </block>
+    <checkbox-group bindchange="checkboxChangeS" wx:if="{{type_name == '保洁'}}">
+      <label class="checkbox">
+        <checkbox style="transform:scale(0.7);" value="1" checked="" color="#e34545" />可议价
+      </label>
+    </checkbox-group>
+  </view>
+</view>
+<view class='bba'>
+  <block>
+    <button bindtap="goPayment" class="next" data-name="{{userName}}" data-telephone="{{telephone}}" data-userNameTwo="{{userNameTwo}}" data-telephoneTwo="{{telephoneTwo}}" wx:if="{{currentTab != 31}}">立即用车</button>
+    <button bindtap="goPayments" class="next" data-news="{{news}}" data-name="{{serName}}" data-telephone="{{serPhone}}" data-address="{{server_address}}" data-demand="{{demand}}" wx:elif="{{type_name == '回收换钱'}}">一键回收</button>
+    <button bindtap="goPayments" class="next" data-news="{{news}}" data-name="{{serName}}" data-telephone="{{serPhone}}" data-address="{{server_address}}" data-demand="{{demand}}" wx:else>立即服务</button>
+  </block>
+  <view class="section">
+    <picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
+      <view class="picker" style="color:#fff" bindtap="showDialogBtn">
+        预约
+      </view>
+    </picker>
+    <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+
+    <view class="modal-dialog" wx:if="{{showModal}}">
+
+      <view class="modal-title">请确认时间</view>
+
+      <view class="modal-content">
+
+        <view class="modal-input">
+
+          {{useCarTime}}
+
+        </view>
+
+      </view>
+
+      <view class="modal-footer">
+        <block>
+          <view wx:if="{{currentTab == 31}}" class="btn-cancel" bindtap="onCancels" data-status="cancel">取消</view>
+          <view wx:else class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+        </block>
+        <block>
+          <view class="btn-confirm" bindtap="onConfirm" data-status="confirm" data-name="{{userName}}" data-telephone="{{telephone}}" data-usernametwo="{{userNameTwo}}" data-telephonetwo="{{telephoneTwo}}" wx:if="{{currentTab != 31}}">确定</view>
+          <view class="btn-confirm" bindtap="onConfirms" data-status="confirm" data-name="{{serName}}" data-telephone="{{serPhone}}" data-demand="{{demand}}" data-address="{{server_address}}" wx:else>确定</view>
+        </block>
+      </view>
+
+    </view>
+  </view>
+</view>
+<view class="discount" catchtouchmove="preventTouchMove" hidden="{{maskq}}">
+  <view class="discount_q">
+    <view class="close" animation="{{animationData}}" bindtap="closeDiscount">＋</view>
+    <view class="d_title">欢迎注册居帮帮</view>
+    <view class="d_content">
+      <view class="quan">赠送您价值
+        <text style="color:#ae0000;">35元</text>优惠券！</view>
+      <view class="see">我的优惠券页面查看</view>
+    </view>
+    <view class="seeing" bindtap="goDiscount">
+      查看
+    </view>
+  </view>
+</view>

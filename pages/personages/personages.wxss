@@ -1,0 +1,106 @@
+/* pages/personages/personages.wxss */
+.mask{
+  width:100%;
+  height:100%;
+  position:fixed;
+  background-color:#f5f1f2;
+  z-index:9999;
+  top:0;
+  left:0;
+  opacity: 1;
+}
+.contain{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 19px;
+  padding: 20px 20px;
+  font-weight: bold;
+  background:#fff;
+}
+.contain image{
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 75rpx;
+}
+.message{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.status{
+  width: 68px;
+  height: 20px;
+  line-height: 20px;
+  color:#fff;
+   text-align: center;
+   border-radius: 5px;
+  background-color:#5ea5fc;
+}
+.ntegration{
+  width: 40px;
+  height: 20px;
+  line-height: 20px;
+  color: #fff;
+  border-radius: 5px;
+  margin-left: 20px;
+  background-color:#5ea5fc;
+  text-align: center;
+}
+/* .messages{
+  margin-left: 14%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.message image{
+  width: 94rpx;
+  height: 80rpx;
+}
+.message text{
+  margin-top: 20rpx;
+} */
+text{
+  font-size: 14px;
+  font-family:"Microsoft Yahei";
+}
+page {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #ededed;
+}
+.skip{
+  width: 94%;
+  height:40%;
+  margin: 20px auto 0rpx;
+  /* background:#fff; */
+}
+.identity{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  padding: 40rpx 0rpx 40rpx;
+  background:#fff;
+  /* margin-top:5px; */
+  /* border-bottom: 1px solid #ccc; */
+}
+.identity:active{
+  background-color: #ddd;
+}
+.identity .arrow{
+  width: 16rpx;
+  height: 16rpx;
+  border-top: 2px solid #999;
+  border-right: 2px solid #999;
+  position: absolute;
+  right: 40rpx;
+  transform: rotate(45deg);
+  margin-top: 4px;
+}
+.identity image{
+  margin-top: 19rpx;
+  margin-left:12%;
+}

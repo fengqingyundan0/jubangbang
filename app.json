@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/Launch/Launch",
+    "pages/Index/Index",
+    "pages/suggestion/suggestion",
+    "pages/payment/payment",
+    "pages/Discount/Discount",
+    "pages/personages/personages",
+    "pages/Indents/Indents",
+    "pages/Discount_s/Discount_s",
+    "pages/detail/detail",
+    "pages/Install/Install",
+    "pages/Agreement/Agreement",
+    "pages/wallet/wallet",
+    "pages/valueDetail/valueDetail",
+    "pages/logs/logs",
+    "pages/recharge/recharge",
+    "pages/particulars/particulars",
+    "pages/valueList/valueList",
+    "pages/price/price"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#161525",
+    "navigationBarTitleText": "居帮帮",
+    "navigationBarTextStyle": "#fff"
+  }
+}

@@ -1,0 +1,14 @@
+<!-- <view style='width:100%;height:20px;background-color:#cccaca;'></view> -->
+<view  class='discounts'>
+  <view class='discounts_withdraw'style="padding:0 4%;">
+    <button open-type='feedback' class='feedback'><text class='withdraw_deposit'>意见反馈</text><text class='arrow'></text></button>
+  </view>
+  <view class='discounts_withdraw' bindtap='callPhone'>
+    <text class='withdraw_deposit'>客服电话</text>
+    <text style='position: absolute;right: 35px;color:#cccaca'>400-1790-720</text>
+  </view>
+  <view class='discounts_withdraw'>
+    <text class='withdraw_deposit'>版本号</text>
+    <text style='position: absolute;right: 35px;color:#cccaca'>1.1.1</text>
+  </view>
+</view>

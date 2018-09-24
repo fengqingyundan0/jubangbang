@@ -1,0 +1,47 @@
+.discounts {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: auto;
+  margin: 0px auto;
+}
+
+.discounts_withdraw {
+  display: flex;
+  flex-direction: row;
+  width: 92%;
+  padding: 30rpx 4%;
+  border-bottom: 2rpx solid #ccc;
+}
+.discounts_withdraw:active:active{
+  background-color:#ddd;
+}
+button.feedback {
+  width: 100%;
+  padding:30rpx 4%;
+  border: none;
+  background: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: left;
+  line-height: 50rpx;
+}
+.feedback::after{
+  border: none;
+}
+.arrow {
+  width: 16rpx;
+  height: 16rpx;
+  border-top: 4rpx solid #999;
+  border-right: 4rpx solid #999;
+  position: absolute;
+  right: 12rpx;
+  transform: rotate(45deg);
+  margin-top: 16rpx;
+}
+
+text {
+  font-family: "Microsoft Yahei";
+  font-size: 14px;
+  color: #000;
+}

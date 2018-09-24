@@ -1,0 +1,824 @@
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<!-- 待接单---------------------------------------  -->
+<view class="takeorder" wx:if="{{progress == 1 }}" style="background-image:url({{order.cate_id == 31 ? bgimgA : bgimgB}});">
+</view>
+<view class="orderState" wx:if="{{progress == 1 }}">
+  <view class="animate" animation="{{animationData}}">
+
+  </view>
+  <view class="order-state">待接单></view>
+  <view class="wait">
+    <view class="info" wx:if="{{order.cate_id == 31}}">正在为您寻找江湖高手</view>
+    <view class="info" wx:else>正在为您寻找货运司机</view>
+    <view class="taketime">
+      预计
+      <text class="timeout" style="color:skyblue;">{{Minute}}:{{Second}}</text> 内接单
+    </view>
+    <image src="{{avatar_url}}" style="width:100rpx;height:100rpx;border-radius:50%;margin:0 auto;margin-top:100rpx;"></image>
+  </view>
+  <button class="cancle" bindtap="showDialogBtn">取消订单</button>
+  <view class="careNote"  data-text="居帮帮一让生活更简单" bindtap="copyText">
+    <view>温馨提示：您可以退出本页面，关注公众号“<text style="color:#e34545;">居帮帮一让生活更简单</text>”获取实时订单状态信息。或退出后进入小程序个人主页-我的订单查看状态。</view>
+    <view>（点击可复制去微信🔍并关注吧！）</view>
+  </view>
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+
+  <view class="modal-dialog" wx:if="{{showModal}}">
+
+    <view class="modal-title">提示：请选择取消订单的原因？</view>
+
+    <view class="modal-content">
+
+      <view class="modal-radio">
+        <radio-group class="radio-group" bindchange="radioChange">
+          <label class="radio" wx:for="{{reasons_a}}" wx:key="{{idx}}" style="display:flex;line-height:60rpx;height:60rpx;">
+            <radio style="transform:scale(0.7);" name="{{item.name}}" checked="{{item.checked}}" value="{{item.name}}" color="#fbc647" />{{item.value}}
+          </label>
+        </radio-group>
+      </view>
+      <text class="others" style="font-size:28rpx;padding:0 30rpx;margin:10rpx 20rpx;">补充说明(下方框内填写）</text>
+      <textarea placeholder-class="input-holder" bindinput="inputChange" class="input"></textarea>
+
+    </view>
+
+    <view class="modal-footer">
+
+      <view class="btn-cancel" bindtap="onCancel" data-status="cancel">不取消</view>
+
+      <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+
+    </view>
+
+  </view>
+</view>
+<!-- 已接单、抵达---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 2 || progress == 9}}">
+  <block>
+    <view class="order-state" style="width:296rpx;" wx:if="{{progress == 2 && order.cate_id != 31}}">货运司机正在开往取货地></view>
+    <view class="order-state" style="width:296rpx;" wx:elif="{{progress == 2 && order.cate_id == 31}}">江湖高手正在前往服务地></view>
+    <view class="order-state" style="width:296rpx" wx:if="{{progress == 9 && order.cate_id != 31}}">货运司机运送进行中...></view>
+    <view class="order-state" style="width:296rpx" wx:if="{{progress == 9 && order.cate_id == 31}}">江湖高手服务进行中...></view>
+  </block>
+  <!-- <block>
+      <text style="font-size:14px;color:#9b999a;" wx:if="{{progress == 2}}">预计<text style="color:skyblue;">20分内</text>抵达</text>
+    </block> -->
+  <image src="../../img/car.gif" style="width:232rpx;height:72rpx;margin:0 auto;position:absolute;top:36px;left:0;right:0;"></image>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+    <view class="driverInfo" style="position:relative;">
+      <image src="{{order.avatar}}" style="width:130rpx;height:130rpx;border-radius:50%;margin-left:20rpx;" bindtap="govalueList"></image>
+      <view style="width:65%;margin-left:12px;margin-top:30rpx;text-align:left;">
+        <view class="name" style="font-size:16px;" bindtap="govalueList">{{order.name}}
+          <text class="plate" style="font-size:28rpx;">{{order.plate}}</text>
+        </view>
+        <view class="order_num" style="font-size:28rpx;margin-top:20rpx;">接单量
+          <text>{{order.order_num}}单</text>
+        </view>
+        <view class="core">
+          <block wx:if="{{order.score == 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{4.0 < order.score && order.score < 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{3.0< order.score && order.score <4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{2.0< order.score && order.score <3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{1.0< order.score && order.score <2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{0< order.score && order.score <= 1.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block>
+            <text class="score" wx:if="{{order.score !== 0 && order.order_num !== 0}}">{{order.score}}分</text>
+            <text class="score noScore" wx:elif="{{order.score === 0 && order.order_num !== 0}}">暂无评分</text>
+          </block>
+        </view>
+      </view>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:56rpx;right:36rpx;" bindtap="showPhone" wx:if="{{order.cate_id == 31}}"></image>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:104rpx;right:36rpx;" bindtap="showPhone" wx:else></image>
+      <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+      <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+    </view>
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 300}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+        <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+        <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+      </view>
+      <block>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:if="{{order.cate_id == 31}}">
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.demand}}">
+            <text space="emsp">需  求</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.demand}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.area != 0}}">
+            <text space="emsp">打扫面积</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.area}}平方</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.server_type == 4}}">
+            <text space="emsp">需带工具</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:if="{{order.is_tool}}">需要</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:else>不需要</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">支付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top: 10rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:else>
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class='delivery' style='padding:10rpx 26rpx;'>是否搬货
+            <block>
+              <text class="is_carry" style="margin-left:20rpx;" wx:if="{{order.is_carry !== 100}}">不搬货</text>
+              <text class="is_carry" style="margin-left:20rpx;" wx:elif="{{order.is_carry == 100}}">需搬货</text>
+            </block>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;'>
+            <text space="emsp">备  注</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.remarks}}</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">支付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top:20rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <button class="cancleB" bindtap="showDialogBtn" wx:if="{{progress == 2}}">取消订单</button>
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+
+  <view class="modal-dialog" wx:if="{{showModal}}">
+
+    <view class="modal-title">提示：请选择取消订单的原因？</view>
+
+    <view class="modal-content">
+
+      <view class="modal-radio">
+        <radio-group class="radio-group" bindchange="radioChange">
+          <label class="radio" wx:for="{{reasons}}" wx:key="{{idx}}" style="display:flex;line-height:60rpx;height:60rpx;">
+            <radio style="transform:scale(0.7);" name="{{item.name}}" checked="{{item.checked}}" value="{{item.name}}" color="#fbc647" />{{item.value}}
+          </label>
+        </radio-group>
+      </view>
+      <text class="others" style="font-size:28rpx;padding:0 30rpx;margin:10rpx 20rpx;">补充说明(下方框内填写）</text>
+      <textarea placeholder-class="input-holder" bindinput="inputChange" class="input"></textarea>
+
+    </view>
+
+    <view class="modal-footer">
+
+      <view class="btn-cancel" bindtap="onCancel" data-status="cancel">不取消</view>
+
+      <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+
+    </view>
+
+  </view>
+  <button class="cancleB" bindtap="sureEnd" wx:elif="{{progress == 9}}">确认完成</button>
+</view>
+<!-- 待支付---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 5}}">
+
+  <view class="order-state">订单待支付></view>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 300}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+        <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+        <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+      </view>
+      <block>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:if="{{order.cate_id == 31}}">
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.demand}}">
+            <text space="emsp">需  求</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.demand}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.area != 0}}">
+            <text space="emsp">打扫面积</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.area}}平方</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.server_type == 4}}">
+            <text space="emsp">需带工具</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:if="{{order.is_tool}}">需要</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:else>不需要</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">支付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top: 70rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:else>
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class='delivery' style='padding:10rpx 26rpx;'>是否搬货
+            <block>
+              <text class="is_carry" style="margin-left:20rpx;" wx:if="{{order.is_carry !== 100}}">不搬货</text>
+              <text class="is_carry" style="margin-left:20rpx;" wx:elif="{{order.is_carry == 100}}">需搬货</text>
+            </block>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;'>
+            <text space="emsp">备  注</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.remarks}}</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">预付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top:20rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+      </block>
+    </view>
+
+    <view class="payOrder">
+      <text class="pay_fee_detail" style="position:absolute;top:-64rpx;left:60rpx;font-size:24rpx;color:#7a7a7a;">费用明细</text>
+      <view class="pay_fee">
+        费用
+        <text class="payFee" style="color:#e34545">{{order.pay_fee}}元</text>
+      </view>
+      <button class="cancleB" bindtap="showDialogBtn" wx:if="{{progress == 5}}" style="background-color:#fbc647;margin:0rpx;width:30%;height:100rpx;line-height:100rpx;border-radius:0;left:68%;bottom:5rpx;">下单</button>
+    </view>
+    <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+    <view class="modal-dialog" wx:if="{{showModal}}">
+      <view class="modal-title">提示：请选择支付类型</view>
+      <view class="modal-content" style="padding:0;">
+        <view class="modal-radio">
+          <radio-group class="radio-group" bindchange="radioChanges">
+            <label class="radio" wx:for="{{payType}}" wx:key="{{idx}}" style="display:flex;line-height:60rpx;height:60rpx;">
+              <radio style="transform:scale(0.7);" name="{{item.name}}" checked="{{item.checked}}" value="{{item.id}}" color="#fbc647" />{{item.value}}
+            </label>
+          </radio-group>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+        <view class="btn-confirm" bindtap="onConfirms" data-status="confirm">确定</view>
+      </view>
+    </view>
+
+  </view>
+</view>
+<!-- 已关闭 ---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 6}}">
+
+  <view class="order-state">订单已关闭></view>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 300}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+        <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+        <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+      </view>
+      <block>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:if="{{order.cate_id == 31}}">
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.demand}}">
+            <text space="emsp">需  求</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.demand}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.area != 0}}">
+            <text space="emsp">打扫面积</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.area}}平方</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.server_type == 4}}">
+            <text space="emsp">需带工具</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:if="{{order.is_tool}}">需要</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:else>不需要</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">预付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top: 70rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+        <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;' wx:else>
+          <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+          </view>
+          <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+            <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+          </view>
+          <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+            <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+          </view>
+          <view class='delivery' style='padding:10rpx 26rpx;'>是否搬货
+            <block>
+              <text class="is_carry" style="margin-left:20rpx;" wx:if="{{order.is_carry !== 100}}">不搬货</text>
+              <text class="is_carry" style="margin-left:20rpx;" wx:elif="{{order.is_carry == 100}}">需搬货</text>
+            </block>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;'>
+            <text space="emsp">备  注</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.remarks}}</text>
+          </view>
+          <view class="price" style="padding:10rpx 26rpx;">支付费用
+            <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+          </view>
+          <view class="dataSource" style="padding:10px 13px; margin-top:20rpx;">该数据由谋趣科技·居帮帮提供</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- 已退款---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 7}}">
+
+  <view class="order-state">订单已退款></view>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 300}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+        <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+        <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+      </view>
+      <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;'>
+        <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+        </view>
+        <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+          <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+        </view>
+        <view class='delivery' style='padding:10rpx 26rpx;' data-text="{{order.orders_sn}}" bindtap="copyText">订单号码
+          <text class="oreser_sn" style="margin-left:20rpx;">{{order.orders_sn}}</text>
+        </view>
+        <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+          <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+        </view>
+        <view class='delivery' style='padding:10rpx 26rpx;' wx:if="{{order.cate_id != 31}}">是否搬货
+          <block>
+            <text class="is_carry" style="margin-left:20rpx;" wx:if="{{order.is_carry !== 100}}">不搬货</text>
+            <text class="is_carry" style="margin-left:20rpx;" wx:elif="{{order.is_carry == 100}}">需搬货</text>
+          </block>
+        </view>
+        <block>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.demand}}">
+            <text space="emsp">需  求</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.demand}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:elif="{{order.cate_id != 31}}">
+            <text space="emsp">备  注</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.remarks}}</text>
+          </view>
+        </block>
+        <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.area != 0}}">
+          <text space="emsp">打扫面积</text>
+          <text class="notebook" style="margin-left:22rpx;">{{order.area}}平方</text>
+        </view>
+        <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.server_type == 4}}">
+          <text space="emsp">需带工具</text>
+          <text class="notebook" style="margin-left:22rpx;" wx:if="{{order.is_tool}}">需要</text>
+          <text class="notebook" style="margin-left:22rpx;" wx:else>不需要</text>
+        </view>
+        <view class="price" style="padding:10rpx 26rpx;">支付费用
+          <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+        </view>
+        <view class="delivery" style='padding:10rpx 26rpx;'>退款金额
+          <text class="refund" style="margin-left:20rpx;">{{order.refund_fee}}元</text>
+        </view>
+        <view class="dataSource" style="padding:10px 13px;">该数据由谋趣科技·居帮帮提供</view>
+      </view>
+
+    </view>
+  </view>
+</view>
+<!-- 已完成---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 4}}">
+  <view class="order-state">订单已完成></view>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+    <view class="driverInfo" style="position:relative;">
+      <image src="{{order.avatar}}" style="width:130rpx;height:130rpx;border-radius:50%;margin-left:20rpx;"></image>
+      <view style="width:65%;margin-left:12px;margin-top:30rpx;text-align:left;">
+        <view class="name" style="font-size:16px;">{{order.name}}
+          <text class="plate" style="font-size:28rpx;">{{order.plate}}</text>
+        </view>
+        <view class="order_num" style="font-size:14px;margin-top:20rpx;">接单量
+          <text>{{order.order_num}}单</text>
+        </view>
+        <view class="core">
+          <block wx:if="{{order.score == 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{4.0 < order.score && order.score < 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{3.0<order.score  && order.score <4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{2.0<order.score  && order.score <3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{1.0<order.score  && order.score <2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{0< order.score && order.score <= 1.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block>
+            <text class="score" wx:if="{{order.score !== 0 && order.order_num !== 0}}">{{order.score}}分</text>
+            <text class="score noScore" wx:elif="{{order.score === 0 && order.order_num !== 0}}">暂无评分</text>
+          </block>
+        </view>
+      </view>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:56rpx;right:36rpx;" bindtap="showPhone" wx:if="{{order.cate_id == 31}}"></image>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:104rpx;right:36rpx;" bindtap="showPhone" wx:else></image>
+      <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+      <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+    </view>
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 380}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+        <view style="padding:32rpx 32rpx 0;font-size:16px;color:#333333;font-weight:bolder;">服务评价
+          <text style="font-size:28rpx;color:#7a7a7a;font-weight:normal;margin-left:45%;line-height:64rpx;display:inline-block;" bindtap="govalueDetail">我的评价»</text>
+        </view>
+        <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+        <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+      </view>
+      <view class="order_info" style='width:100%;background-color:#fff;border-radius:20rpx;'>
+        <view class="server_detail" style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务详情
+        </view>
+        <view class='server_time' style='padding:10rpx 26rpx;'>服务时间
+          <text class='time' style="margin-left:20rpx;">{{order.server_time}}</text>
+        </view>
+        <view class='delivery' style='padding:10rpx 26rpx;' data-text="{{order.orders_sn}}" bindtap="copyText">订单号码
+          <text class="oreser_sn" style="margin-left:20rpx;">{{order.orders_sn}}</text>
+        </view>
+        <view class="delivery" style='padding:10rpx 26rpx;'>服务类型
+          <text class="cate_name" style="margin-left:20rpx;">{{order.cate_name}}</text>
+        </view>
+        <view class='delivery' style='padding:10rpx 26rpx;' wx:if="{{order.cate_id != 31}}">是否搬货
+          <block>
+            <text class="is_carry" style="margin-left:20rpx;" wx:if="{{order.is_carry !== 100}}">不搬货</text>
+            <text class="is_carry" style="margin-left:20rpx;" wx:elif="{{order.is_carry == 100}}">需搬货</text>
+          </block>
+        </view>
+        <block>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.demand}}">
+            <text space="emsp">需  求</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.demand}}</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:elif="{{order.cate_id != 31}}">
+            <text space="emsp">备  注</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.remarks}}</text>
+          </view>
+        </block>
+        <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.area != 0}}">
+            <text space="emsp">打扫面积</text>
+            <text class="notebook" style="margin-left:22rpx;">{{order.area}}平方</text>
+          </view>
+          <view class="note" style='padding:10rpx 26rpx;' wx:if="{{order.server_type == 4}}">
+            <text space="emsp">需带工具</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:if="{{order.is_tool}}">需要</text>
+            <text class="notebook" style="margin-left:22rpx;" wx:else>不需要</text>            
+          </view>
+        <view class="price" style="padding:10rpx 26rpx;">支付费用
+          <text class="pay-fee" style="color:#e34545;margin-left:20rpx;">{{order.pay_fee}}元</text>
+        </view>
+        <view class="dataSource" style="padding:10px 13px;">该数据由谋趣科技·居帮帮提供</view>
+      </view>
+
+    </view>
+  </view>
+</view>
+<!-- 待评价---------------------------------------  -->
+<view class="orderState" wx:elif="{{progress == 3}}">
+  <view class="order-state">订单待评价></view>
+  <view class="driverState" style="text-align:left;margin-top:140rpx;background-color:#f5f1f2">
+    <view class="driverInfo" style="position:relative;">
+      <image src="{{order.avatar}}" style="width:130rpx;height:130rpx;border-radius:50%;margin-left:20rpx;"></image>
+      <view style="width:65%;margin-left:12px;margin-top:30rpx;text-align:left;">
+        <view class="name" style="font-size:16px;">{{order.name}}
+          <text class="plate" style="font-size:28rpx;">{{order.plate}}</text>
+        </view>
+        <view class="order_num" style="font-size:14px;margin-top:20rpx;">接单量
+          <text>{{order.order_num}}单</text>
+        </view>
+        <view class="core">
+          <block wx:if="{{order.score == 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{4.0 < order.score && order.score < 5.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{3.0<order.score && order.score<4.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{2.0<order.score && order.score<3.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{order.score == 2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{1.0<order.score && order.score<2.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_h.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block wx:elif="{{0< order.score && order.score <= 1.0}}">
+            <image src="../../img/star_y.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+            <image src="../../img/star_n.png" style="width:24rpx;height:24rpx;"></image>
+          </block>
+          <block>
+            <text class="score" wx:if="{{order.score !== 0 && order.order_num !== 0}}">{{order.score}}分</text>
+            <text class="score noScore" wx:elif="{{order.score === 0 && order.order_num !== 0}}">暂无评分</text>
+          </block>
+        </view>
+      </view>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:56rpx;right:36rpx;" bindtap="showPhone" wx:if="{{order.cate_id == 31}}"></image>
+      <image src="../../img/phone.png" style="width:40rpx;height:40rpx;position:absolute;top:104rpx;right:36rpx;" bindtap="showPhone" wx:else></image>
+      <view class="left-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;left:0;background-color:#f5f1f2;transform:translate(-50%,-50%);border-radius:50%;z-index:100;"></view>
+      <view class="right-circle" style="width:40rpx;height:40rpx;position:absolute;top:100%;right:0;background-color:#f5f1f2;transform:translate(50%,-50%);border-radius:50%;z-index:100;"></view>
+    </view>
+    <view class='Orderdetail_details' style='padding:0;background-color:#f5f1f2;text-align:left;'>
+      <view class="address" style="width:100%;height:{{order.cate_id == 31 ? 220 : 312}}rpx;background-color:#fff;border-radius:20rpx;position:relative;">
+        <view style="padding:32rpx;font-size:16px;color:#333333;font-weight:bolder;">服务位置</view>
+        <block wx:if="{{order.cate_id == 31}}">
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class='delivery' style='border:none;padding:32rpx;font-size:14px;'>
+            <view style="background-color:#19cc6e;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.start_adrs}}</text>
+
+          </view>
+          <view class='delivery' style='border:none;padding:0rpx 32rpx 32rpx;font-size:14px;'>
+            <view style="background-color:#d3330f;width:20rpx;height:20rpx;border-radius:50%;display:inline-block;"></view>
+            <text style='margin-left:46rpx;color:#333333;'>{{order.end_adrs}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+  <view class="star_score">
+    <block wx:for="{{stars}}" wx:key="key">
+      <image class="star-image" style="left: {{item*75}}rpx" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+        <view class="item" style="left:0rpx" data-key="{{item+0.5}}" bindtap="selectLeft"></view>
+        <view class="item" style="left:26rpx" data-key="{{item+1}}" bindtap="selectRight"></view>
+      </image>
+    </block>
+  </view>
+  <textarea maxlength="50" style="width:604rpx;height:160rpx;padding:10rpx;20rpx;background-color:#e4e4e4;margin:0 auto;border:2rpx solid #cccccc;font-size:14px;color:#7a7a7;" bindinput="bindevaluate">
+  </textarea>
+  <text class="tip" style="font-size:12px;color:#a0a0a0;position:absolute;right:64rpx;">请输入{{plength}}/50个字</text>
+  <checkbox-group class="anonymouscheckbox" bindchange="checkboxChange">
+    <label class="anonymous_checkbox">
+      <checkbox style="transform:scale(0.7);" value="1" checked="" color="#e34545" />匿名评价
+    </label>
+  </checkbox-group>
+  <button class="submit" bindtap="startRating">确认提交</button>
+</view>

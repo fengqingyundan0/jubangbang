@@ -1,0 +1,17 @@
+<!--pages/price.wxml-->
+<view class="price">
+  <view class='note'>服务车型： {{cate_name}}</view>
+  <view class='note'>基础公里数：{{base_km}} 公里</view>
+  <view class='note'>{{base_km}}公里内价钱：{{base_price}} 元</view>
+  <view class='note'>超出{{base_km}}公里后单价：{{price}} 元/公里</view>
+  <block>
+    <view class='note' wx:if="{{distance_t < 5}}">线路距离：{{distance}} 公里</view>
+    <view class='note' wx:else>线路距离：{{distance_t}} 公里</view>
+  </block>
+  <block>
+    <view class='note' wx:if="{{distance_t > 5}}">总价：{{base_price}} + ({{distance_t}} - {{base_km}}) × {{price}} = {{carriage}} 元</view>
+    <view class='note' wx:else>总价：{{base_price}} 元</view>
+  </block>
+  <view class='circle circle_left'></view>
+  <view class='circle circle_right'></view>
+</view>

@@ -1,0 +1,56 @@
+<!--pages/Wallet/Discount/Discount.wxml-->
+<!--导航条-->
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class="nav">
+  <view class="navbar">
+    <view wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">{{item}}</view>
+  </view>
+</view>
+<scroll-view scroll-y="true" class="discounts">
+  <view class="discount">
+    <!--当前可用-->
+    <view class="canUse" hidden="{{currentTab!==0}}">
+      <block wx:for="{{discountCan}}" wx:key="item.index">
+        <view class="discount-info {{chosenId === index?'active':''}}" data-idx="{{index}}" data-id="{{item.id}}" data-cate_id="{{item.cate_id}}" data-cate_name="{{item.cate_name}}" data-type="{{item.type}}" data-num="{{item.num}}">
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:if="{{item.type == 1}}">{{item.num}}元优惠券</text>
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:elif="{{item.type == 2}}">{{item.num}}折优惠券</text>
+          <!-- <text class="cartype">仅限{{item.cate_name}}使用</text> -->
+          <text class="cartype">{{item.cate_name}}专用</text>
+          <text style='font-size:24rpx;color:#999;width:90%;margin-left:10%;margin-top:90rpx;'>有效期:{{item.start_time}}至{{item.end_time}}</text>
+        </view>
+        <!-- <view class='goUse' bindtap='goUse'>去使用</view> -->
+      </block>
+    </view>
+
+    <!--已使用-->
+    <view class="used" hidden="{{currentTab!==1}}">
+      <block wx:for="{{discountCan}}" wx:key="item.index">
+        <view class="discount-info" data-idx="{{index}}" data-id="{{item.id}}" data-cate_id="{{item.cate_id}}" data-cate_name="{{item.cate_name}}" data-type="{{item.type}}" data-num="{{item.num}}" style="opacity:0.5">
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:if="{{item.type == 1}}">{{item.num}}元优惠券</text>
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:elif="{{item.type == 2}}">{{item.num}}折优惠券</text>
+          <!-- <text class="cartype">仅限{{item.cate_name}}使用</text> -->
+          <text class="cartype">{{item.cate_name}}专用</text>
+          <text style='font-size:24rpx;color:#999;width:90%;margin-left:10%;margin-top:90rpx;'>有效期:{{item.start_time}}至{{item.end_time}}</text>
+        </view>
+        <!-- <view class='goUse' bindtap='goUse'>去使用</view> -->
+      </block>
+    </view>
+    <!--已失效-->
+    <view class="overdue" hidden="{{currentTab!==2}}">
+      <block wx:for="{{discountCan}}" wx:key="item.index">
+        <view class="discount-info" data-idx="{{index}}" data-id="{{item.id}}" data-cate_id="{{item.cate_id}}" data-cate_name="{{item.cate_name}}" data-type="{{item.type}}" data-num="{{item.num}}" style="opacity:0.3">
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:if="{{item.type == 1}}">{{item.num}}元优惠券</text>
+          <text style='font-size:36rpx;color:#eee;width:90%;margin-left:25%;margin-top:20rpx;' wx:elif="{{item.type == 2}}">{{item.num}}折优惠券</text>
+          <!-- <text class="cartype">仅限{{item.cate_name}}使用</text> -->
+          <text class="cartype">{{item.cate_name}}专用</text>
+          <text style='font-size:24rpx;color:#999;width:90%;margin-left:10%;margin-top:90rpx;'>有效期:{{item.start_time}}至{{item.end_time}}</text>
+        </view>
+        <!-- <view class='goUse' bindtap='goUse'>去使用</view> -->
+      </block>
+    </view>
+    <!-- <button class="getDiscount" bindtap="getDiscount">
+    <text class="go">去优惠券活动页</text>
+  </button> -->
+  </view>
+</scroll-view>

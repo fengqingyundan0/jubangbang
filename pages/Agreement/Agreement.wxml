@@ -1,0 +1,7 @@
+<!--pages/Agreement/Agreement.wxml-->
+<view>
+<image src="https://mq.mouqukeji.com/static/image/agreement_1.png"></image>
+<image src="https://mq.mouqukeji.com/static/image/agreement_2.png"></image>
+<image src="https://mq.mouqukeji.com/static/image/agreement_3.png"></image>
+<image src="https://mq.mouqukeji.com/static/image/agreement_4.png"></image>
+</view>

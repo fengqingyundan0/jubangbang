@@ -1,0 +1,189 @@
+page {
+  background: #f1f2f6;
+  height: 1380rpx;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: #f5f1f2;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.Orderdetail {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+/* .Orderdetail button{
+  width: 70%;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 15px;
+  color: #fff;
+  margin-top:20px;
+  background-color: #f76149;
+} */
+
+.Orderdetail_time {
+  padding: 20rpx 0rpx 5rpx;
+  font-size: 18px;
+  color: #000;
+}
+
+.Orderdetail_details {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin: 0 auto;
+  border-radius: 5px;
+  padding: 0px 2.5% 5px;
+  background-color: #fff;
+}
+
+text {
+  font-size: 13px;
+  /* color:#acacac; */
+  color: #999;
+  font-family: "Microsoft Yahei";
+}
+
+.Orderdetail_service {
+  color: #4b484a;
+  font-size: 16px;
+  padding: 8px 0px 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.Orderdetail_delivery {
+  padding: 8px 0px 8px;
+}
+
+.Orderdetail_userinfo {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20rpx;
+  width: 100%;
+}
+
+.Orderdetail_user {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16rpx;
+  width: 130px;
+}
+
+.prices {
+  height: 115px;
+  background: #fff;
+  margin-top: 20rpx;
+  border-radius: 5px;
+}
+
+.price {
+  height: 30px;
+  margin-top: 5px;
+}
+
+button.pay_butt {
+  width: 100%;
+  background-color: #e34545;
+  color: #fff;
+  position: fixed;
+  bottom: 0px;
+  border-radius: 0px;
+}
+
+button.pay_butt::after {
+  border: none;
+} 
+.modal-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+.modal-dialog {
+  width: 540rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 9999;
+  background: #f9f9f9;
+  margin: -352rpx 105rpx;
+  border-radius: 36rpx;
+}
+
+.modal-title {
+  padding: 30rpx 0;
+  font-size: 32rpx;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content {
+  height: auto;
+}
+
+.modal-radio {
+  padding: 30rpx;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.input {
+  width: 90%;
+  height: 82rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  margin: 10rpx 20rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  border: 2rpx solid #ddd;
+  color: #333;
+}
+
+input-holder {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  font-size: 34rpx;
+  line-height: 86rpx;
+}
+
+.btn-cancel {
+  width: 50%;
+  color: #666;
+  text-align: center;
+  border-right: 1px solid #dedede;
+}
+
+.btn-confirm {
+  width: 50%;
+  color: #fbc647;
+  text-align: center;
+}

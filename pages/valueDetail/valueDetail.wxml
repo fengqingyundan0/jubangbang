@@ -1,0 +1,84 @@
+<!--pages/valueDetail.wxml-->
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class="value-detail">
+  <view class="core">
+    <block wx:if="{{order.score == 5}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+    </block>
+    <block wx:elif="{{4 < order.score && order.score  < 5}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_h.png"></image>
+    </block>
+    <block wx:elif="{{order.score == 4}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{3<order.score && order.score <4}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_h.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{order.score == 3}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{2<order.score && order.score <3}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_h.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{order.score == 2}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{1<order.score && order.score <2}}">
+      <image src="../../img/star_y.png"></image>
+      <image src="../../img/star_h.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{0<order.score && order.score <1}}">
+      <image src="../../img/star_h.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <block wx:elif="{{order.score === 0}}">
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+      <image src="../../img/star_n.png"></image>
+    </block>
+    <view class="degree">司机满意度</view>
+  </view>
+  <view class="content" wx:if="{{order.content}}">
+    评价内容：{{order.content}}
+  </view>
+  <view class="content" wx:else>
+    无评价内容！
+  </view>
+</view>

@@ -1,0 +1,33 @@
+/* pages/price.wxss */
+
+page {
+  background-color: #eee;
+}
+
+.price {
+  margin: 30rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  position: relative;
+}
+
+.price .note {
+  color: #333;
+  font-size: 26rpx;
+  padding: 20rpx 50rpx;
+}
+
+.price .circle {
+  width: 30rpx;
+  height: 30rpx;
+  background: #eee;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.price .circle_right {
+  right: 0;
+  transform: translate(50%,-50%);
+}

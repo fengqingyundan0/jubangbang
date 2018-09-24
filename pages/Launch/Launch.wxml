@@ -1,0 +1,17 @@
+<!--pages/Launch/Launch.wxml-->
+<block>
+  <button wx:if="{{thr_session}}" bindtap='goIndex' longpress='goIndex' disabled="{{click}}" hover-class="button-hover" animation="{{animationData}}">
+    <text class="login">登录
+    <!-- <text class="timerest" hidden="{{!click}}">({{time}}s)</text> -->
+    </text>
+  </button>
+  <button wx:else open-type="getUserInfo" bindgetuserinfo="bindload" disabled="{{click}}" hover-class="button-hover">
+    <text class="login">登录
+    <!-- <text class="timerest" hidden="{{!click}}">({{time}}s)</text> -->
+    </text>
+  </button>
+</block>
+<view class="agreement" style="color:#161525;margin:0 auto;text-align:center;font-size:20rpx;position:fixed;left:0;right:0;bottom:370rpx;">
+  点击上方“登录”，即表示同意
+  <text style="color:#ff3300;display:inline-block;" bindtap="goAgreement">“居帮帮”用户注册协议</text>
+</view>

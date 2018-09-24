@@ -1,0 +1,25 @@
+<view class='mask' hidden='{{maskFlag}}'>
+</view>
+<view class='rech'>
+  <image src='../../img/jinbi.png' style='width:80px;height:80px;position:absolute;left:50%;margin-left:-40px;margin-top:20px;'></image>
+  <text class='rech_t1'>{{ total }}</text>
+  <text class='rech_t2'>余额</text>
+</view>
+<text class='rech_t3'>充值</text>
+<view class='rechar'>
+  <block wx:for="{{goodList}}" wx:key="key" wx:for-index="idx">
+    <view class='rechar_a'>
+      <view style='width:70rpx;height:80rpx;margin-left:6%;display:inline-block;'>
+         <image src='../../img/jinbi.png' style='width:60rpx;height:60rpx;margin-top:10rpx;display:block;'></image>
+      </view>
+     
+      <view class='rechar_t'>
+        <text class='rechar_ts'>充{{ item.recharge_fee }}</text>
+        <text class='techar_tt' wx:if="{{ item.is_enable==1 }}">送{{ item.reward_fee }}</text>
+        <text class='techar_tt' wx:else></text>
+      </view>
+      
+      <view class='is_checked' data-id="{{ item.id }}" style="background:{{item.id==curent_id?'#161525':'#f8b923'}};color:{{item.id==curent_id?'#f8b923':'#000'}}" data-recharge_fee="{{ item.recharge_fee }}" bindtap="serviceSelection">充值</view>
+    </view>
+  </block> 
+</view>

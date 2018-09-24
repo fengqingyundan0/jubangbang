@@ -1,0 +1,14 @@
+<view class="section">
+<form bindreset="cleanInput">
+  <input placeholder="{{placeholder}}"  type="text" bindinput="bindKeyInput" focus="true"/>
+  <button class="reset" formType="reset">x</button>
+</form>
+</view>
+<view class="sug_info" wx:for="{{sugData}}" wx:key="{{key}}">
+  <view bindtap="chosen" class="sug {{chosenId == item.id?'active':''}}" data-id="{{item.id}}" data-title="{{item.title}}" data-address="{{item.address}}" data-location="{{item.location}}">
+    <text class="title">{{item.title}}</text>
+    <text class="address">{{item.address}}</text>
+  </view>
+</view>
+ <button bindtap="confirm" class="confirm" wx:if="{{placeholder == '请输入起点'}}">确定起点</button>
+<button bindtap="confirm" class="confirm" wx:else>确定终点</button> 

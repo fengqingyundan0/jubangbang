@@ -1,0 +1,26 @@
+<!--pages/personages/personages.wxml-->
+<view class='mask' hidden='{{maskFlag}}'>
+</view> 
+<view class='contain'>
+  <image class="userinfo-avatar" src="{{avatar_url}}" background-size="cover" style=''></image>
+  <text class="userinfo-nickname">{{nick_name}}</text>
+</view>
+<!-- <view style='width:100%;height:3px;background:#ccc'></view> -->
+<view class='skip'>
+  <view class='identity' bindtap="bindInTap">
+     <image src='../../img/discount.png' style=" width: 44rpx;height:44rpx;"></image> 
+    <text style='margin-left:40rpx;'>钱包</text>
+  </view>
+  <view class='identity' bindtap="bindIndentTap">
+     <image src='../../img/order.png' style=" width: 44rpx;height:48rpx;"></image> 
+    <text style='margin-left:40rpx;'>我的订单</text>
+  </view>
+  <!-- <view class='identity' bindtap="onIndentTap">
+     <image src='../../img/address.png' style=" width: 44rpx;height:52rpx;"></image> 
+    <text style='margin-left:40rpx;'>我的地址</text>
+  </view> -->
+  <view class='identity' bindtap="bindsInTap">
+   <image src='../../img/setting.png' style=" width: 44rpx;height:48rpx;"></image> 
+    <text style='margin-left:40rpx;'>设置</text>
+  </view>
+</view>
